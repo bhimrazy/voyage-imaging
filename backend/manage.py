@@ -2,7 +2,12 @@ import os
 import sys
 from typing import List
 
-COMMANDS = {"serve": "Start the server.", "test": "Run the tests"}
+COMMANDS = {
+            "startapp": "Create a app with router, models and controllers",
+            "serve": "Start the server" ,
+            "test": "Run the tests"
+
+            }
 
 
 def generate_description_of_commands() -> None:
@@ -22,7 +27,15 @@ def handle_commands(args: List[str]) -> None:
     if cmd not in COMMANDS:
         raise Exception("Not a valid command")
 
-    if cmd == "serve":
+    if cmd == "startapp":
+        try:
+            app_name = args[2]
+            os.system(f"python scripts/start_app.py {app_name}")
+
+        except IndexError:
+            raise Exception("Please provide the app name")
+
+    elif cmd == "serve":
         os.system("uvicorn src.main:app --host 0.0.0.0 --reload")
     elif cmd == "test":
         os.system("pytest")
