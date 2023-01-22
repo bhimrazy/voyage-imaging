@@ -6,6 +6,8 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from src.database import Base
 
+import bcrypt
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -22,6 +24,12 @@ class User(Base):
                         server_default=func.now(), nullable=False)
     updated_at = Column(TIMESTAMP(timezone=True),
                         server_default=func.now(), nullable=False)
+
+    def get_password_hash(password: str) -> str:
+        return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+    def check_password(self, password: str) -> bool:
+        return bcrypt.checkpw(password.encode(), self.password.encode())
 
     def __repr__(self):
         return (
