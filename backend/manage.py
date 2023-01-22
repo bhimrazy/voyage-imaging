@@ -3,11 +3,11 @@ import sys
 from typing import List
 
 COMMANDS = {
-            "startapp": "Create a app with router, models and controllers",
-            "serve": "Start the server" ,
-            "test": "Run the tests"
+    "startapp": "Create a app with router, models and controllers",
+    "serve": "Start the server" ,
+    "test": "Run the tests"
 
-            }
+}
 
 
 def generate_description_of_commands() -> None:

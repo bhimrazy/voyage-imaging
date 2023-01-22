@@ -1,8 +1,27 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
+
 from .database import database
 from typing import *
 
-app = FastAPI()
+from .api_router import router
+
+# Define application
+app = FastAPI(
+    title="Voyage Imaging app",
+    description="Voyage Imaging app!",
+    version="0.1",
+)
+
+app.include_router(router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")

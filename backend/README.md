@@ -22,17 +22,23 @@
     # Run flake8
     $ flake8
 
+
+    # alembic migrations
+    $ alembic revision --autogenerate -m "initial ....  migraion"
+    $ alembic upgrade head
+
 ```
 
 ## Project Structure
+
 ```
     .
     ├── alembic/            alembic database migrations
-    ├── src/                main app logic with MVC, etc   
+    ├── src/                main app logic with MVC, etc
     │   └── main.py
-    ├── tests/              tests 
+    ├── tests/              tests
     ├── manage.py           manager script
-    ├── requirements.txt    
+    ├── requirements.txt
     ├── alembic.ini
     └── README.md
 
