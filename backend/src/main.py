@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from .database import database
+from typing import *
 
 app = FastAPI()
 
-from decouple import config
-print(config("DATABASE_URL"))
 
 @app.get("/")
 def index():
@@ -26,5 +25,5 @@ async def shutdown() -> None:
 
 
 @app.get("/healthcheck", include_in_schema=False)
-async def healthcheck() -> dict[str, str]:
+async def healthcheck() -> Dict[str, str]:
     return {"status": "ok"}
