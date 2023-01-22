@@ -1,8 +1,30 @@
 from fastapi import FastAPI
+from .database import database
 
 app = FastAPI()
 
+from decouple import config
+print(config("DATABASE_URL"))
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def index():
+    """Return a welcome message."""
+    return {"message": "Welcome to Voyage Imaging app!"}
+
+
+@app.on_event("startup")
+async def startup() -> None:
+    """Connect to the database on startup."""
+
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown() -> None:
+    """Disconnect from the database on shutdown."""
+    await database.disconnect()
+
+
+@app.get("/healthcheck", include_in_schema=False)
+async def healthcheck() -> dict[str, str]:
+    return {"status": "ok"}
