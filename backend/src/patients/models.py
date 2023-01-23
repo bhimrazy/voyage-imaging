@@ -11,7 +11,8 @@ from src.database import Base
 class Patient(Base):
     __tablename__ = "patients"
 
-    id = Column(postgresql.UUID(as_uuid=True), primary_key=True)
+    id = Column(postgresql.UUID(as_uuid=True), primary_key=True,
+                index=True)
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
     gender = Column(ENUM('male', 'female', 'other',
@@ -32,7 +33,8 @@ class Patient(Base):
 class PatientRecord(Base):
     __tablename__ = "patient_records"
 
-    id = Column(postgresql.UUID(as_uuid=True), primary_key=True)
+    id = Column(postgresql.UUID(as_uuid=True), primary_key=True,
+                index=True)
     patient_id = Column(postgresql.UUID(as_uuid=True),
                         ForeignKey("patients.id"), nullable=False)
     date = Column(DateTime, default=func.now(), nullable=False)

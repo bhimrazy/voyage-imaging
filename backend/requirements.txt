@@ -16,6 +16,8 @@ importlib-metadata==6.0.0
 importlib-resources==5.10.2
 Mako==1.2.4
 MarkupSafe==2.1.2
+passlib==1.7.4
+psycopg2-binary==2.9.5
 pydantic==1.10.4
 PyJWT==1.7.1
 python-dotenv==0.21.1
