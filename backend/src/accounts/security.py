@@ -1,11 +1,12 @@
-import bcrypt
+import json
+from passlib.hash import bcrypt
+from fastapi import HTTPException
+from fastapi_jwt_auth import AuthJWT
 
 
 def hash_password(password: str) -> bytes:
-    pw = bytes(password, "utf-8")
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pw, salt).decode()
+    return bcrypt.hash(password)
 
 
 def check_password(password: str, password_in_db: str) -> bool:
-    return bcrypt.checkpw(password.encode(), password_in_db.encode())
+    return bcrypt.verify(password, password_in_db)

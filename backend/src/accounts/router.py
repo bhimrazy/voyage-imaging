@@ -1,9 +1,10 @@
 import uuid
-
+import json
 from fastapi import APIRouter, HTTPException, Depends, Request, Response, status
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
+
 from .config import auth_config
 from pydantic import BaseModel
 
@@ -11,7 +12,7 @@ from .models import User
 from src.database import database
 from sqlalchemy import insert, select
 from .schemas import UserCreate, UserResponse, UserLogin
-
+from .security import admin_only
 router = APIRouter()
 
 # in production you can use Settings management
@@ -45,12 +46,24 @@ async def login(user: UserLogin, Authorize: AuthJWT = Depends()):
     if not existing_user:
         raise HTTPException(status_code=400, detail="Email does not exist.")
 
-    print("password", user.check_password(existing_user.password))
     if not user.check_password(existing_user.password):
         raise HTTPException(status_code=400, detail="Password mismatch.")
 
-    access_token = Authorize.create_access_token(subject=user.email)
+    data = {
+        "id": str(existing_user.id),
+        "email": existing_user.email,
+        "is_admin": existing_user.is_admin,
+    }
+    access_token = Authorize.create_access_token(subject=json.dumps(data))
     return {"access_token": access_token}
+
+
+@router.get('/users/me')
+def user(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+
+    current_user = Authorize.get_jwt_subject()
+    return {"user": json.loads(current_user)}
 
 
 @router.post("/users/", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
