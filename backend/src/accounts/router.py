@@ -12,7 +12,6 @@ from .models import User
 from src.database import database
 from sqlalchemy import insert, select
 from .schemas import UserCreate, UserResponse, UserLogin
-from .security import admin_only
 router = APIRouter()
 
 # in production you can use Settings management
