@@ -1,0 +1,47 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  api:
+    container_name: voyage_api
+    build: .
+    command: python manage.py serve
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+
+    # environment:
+    #   - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${PROJECT_NAME}
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: postgres_${PROJECT_NAME}
+    # expose:
+    #   - 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${PROJECT_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_${PROJECT_NAME}
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  app_pg_data:
