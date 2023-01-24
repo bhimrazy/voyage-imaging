@@ -5,6 +5,9 @@
 It is supposed that you open this repo in github codespace or gitpod.
 
 ```
+    # create a .env file from .env.example
+    $ cp .env.example .env
+
     # step 1 : start docker
     docker-compose up -d # ( "-d" in detached mode, remove "-d" for non detached mode)
 
