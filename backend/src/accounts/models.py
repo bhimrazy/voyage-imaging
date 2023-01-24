@@ -6,8 +6,6 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from src.database import Base
 
-import bcrypt
-
 
 class User(Base):
     __tablename__ = 'users'
