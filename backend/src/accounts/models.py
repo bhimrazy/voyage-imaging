@@ -6,6 +6,7 @@ from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from src.database import Base
 
+
 class User(Base):
     __tablename__ = 'users'
 

@@ -10,7 +10,6 @@ from pydantic import BaseModel
 
 from .models import User
 from src.database import database
-from sqlalchemy import insert, select
 from .schemas import UserCreate, UserResponse, UserLogin
 router = APIRouter()
 
@@ -25,17 +24,6 @@ class Settings(BaseModel):
 @AuthJWT.load_config
 def get_config():
     return Settings()
-
-
-def hash_password(password: str) -> bytes:
-    pw = bytes(password, "utf-8")
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pw, salt)
-
-
-def check_password(password: str, password_in_db: bytes) -> bool:
-    password_bytes = bytes(password, "utf-8")
-    return bcrypt.checkpw(password_bytes, password_in_db)
 
 
 @router.post('/token')

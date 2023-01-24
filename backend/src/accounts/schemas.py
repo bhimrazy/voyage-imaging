@@ -1,5 +1,4 @@
 import uuid
-import bcrypt
 from .models import User
 from .security import hash_password, check_password
 from pydantic import BaseModel, validator, EmailStr
