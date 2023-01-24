@@ -14,10 +14,29 @@ class PatientCreate(BaseModel):
 
 
 class PatientResponse(BaseModel):
-    id: uuid.UUID = uuid.uuid4()
+    id: uuid.UUID
     name: str
     age: int
-    gender: str = "male"
+    gender: str
     phone: str
     address: str
-    doctor_id: uuid.UUID = None
+    doctor_id: uuid.UUID
+
+
+    @staticmethod
+    def parse(data):
+        """parses data"""
+        def parse_one(data):
+            return PatientResponse(**{
+                    "id": data.id,
+                    "name": data.name,
+                    "age": data.age,
+                    "gender": data.gender,
+                    "phone": data.phone,
+                    "address": data.address,
+                    "doctor_id": data.doctor_id,
+                })
+        if isinstance(data, list):
+            return [parse_one(item) for item in data]
+        return parse_one(data)
+

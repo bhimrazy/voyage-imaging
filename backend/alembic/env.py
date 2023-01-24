@@ -28,7 +28,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-DATABASE_URL = "postgresql://postgres:password@172.18.0.2:5432/voyage_imaging"
+DATABASE_URL = "postgresql://postgres:password@172.18.0.3:5432/voyage_imaging"
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 config.compare_type = True
 config.compare_server_default = True
