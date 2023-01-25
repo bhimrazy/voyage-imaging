@@ -2,7 +2,7 @@ from .models import User
 from .schemas import UserCreate
 from databases import Database
 
-DATABASE_URL = "postgresql://postgres:password@172.18.0.2:5432/voyage_imaging"
+DATABASE_URL = "postgresql://postgres:password@172.18.0.3:5432/voyage_imaging"
 database = Database(DATABASE_URL)
 
 
@@ -23,4 +23,4 @@ async def create_admin():
     except Exception as e:
         print("ERROR:", e)
 
-    # await database.disconnect()
+    await database.disconnect()

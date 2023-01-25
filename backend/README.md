@@ -18,6 +18,7 @@ It is supposed that you open this repo in github codespace or gitpod.
     # and change the ip under DATABAL to current  , leave it if the ip is same
 
     # migrate to db
+    # alembic revision --autogenerate -m "initial database schema migraion" -> makes migrations files
     $ alembic upgrade head
 
 
