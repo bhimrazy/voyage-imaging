@@ -7,10 +7,11 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 from typing import *
 from pydantic import BaseModel
 
-from .models import Patient
+from .models import patients, Patient, records, PatientRecord
 from src.database import database
-from .schemas import PatientCreate, PatientResponse
+from .schemas import PatientCreate, PatientResponse, PatientRecordCreate, PatientRecordResponse
 router = APIRouter()
+
 
 @router.get("/patients/", status_code=status.HTTP_200_OK, response_model=List[PatientResponse])
 async def get_patients(Authorize: AuthJWT = Depends()):
@@ -18,23 +19,27 @@ async def get_patients(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
     user = json.loads(Authorize.get_jwt_subject())
 
-    query = Patient.__table__.select().where(Patient.doctor_id == user["id"])
+    query = patients.select().where(Patient.doctor_id == user["id"])
     datas = await database.fetch_all(query)
 
     return PatientResponse.parse(datas)
 
 
 @router.get("/patients/{patient_id}", status_code=status.HTTP_200_OK, response_model=PatientResponse)
-async def get_patients(patient_id:str ,Authorize: AuthJWT = Depends()):
+async def get_patients(patient_id: str , Authorize: AuthJWT = Depends()):
 
     Authorize.jwt_required()
     user = json.loads(Authorize.get_jwt_subject())
     try:
-        query = Patient.__table__.select().where(Patient.id == patient_id)
+        query = patients.select().where(Patient.id == patient_id)
         patient = await database.fetch_one(query)
-    except Exception as e: 
+    except Exception as e:
         raise HTTPException(status_code=404, detail=e.message)
 
+    if not patient:
+
+        raise HTTPException(
+            status_code=404, detail=f"Patient with {patient_id} not found")
     return PatientResponse.parse(patient)
 
 
@@ -46,14 +51,50 @@ async def create_patient(patient: PatientCreate, Authorize: AuthJWT = Depends())
 
     patient.id = uuid.uuid4()
     patient.doctor_id = user["id"]
-    query = Patient.__table__.insert().values(**patient.dict()).returning(Patient)
+    query = patients.insert().values(**patient.dict()).returning(patients)
     data = await database.fetch_one(query)
-    return {
-        "id": data.id,
-        "name": data.name,
-        "age": data.age,
-        "gender": data.gender,
-        "phone": data.phone,
-        "address": data.address,
-        "doctor_id": data.doctor_id,
-    }
+    return PatientResponse.parse(data)
+
+
+@router.get("/patient/{patient_id}/records", status_code=status.HTTP_200_OK, response_model=List[PatientRecordResponse])
+async def get_patient_records(patient_id: str, Authorize: AuthJWT = Depends()):
+
+    Authorize.jwt_required()
+    user = json.loads(Authorize.get_jwt_subject())
+
+    try:
+        query = records.select().where(PatientRecord.patient_id == patient_id)
+        datas = await database.fetch_all(query)
+        return PatientRecordResponse.parse(datas)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e.message)
+
+
+@router.get("/patient/{patient_id}/records/{record_id}", status_code=status.HTTP_200_OK, response_model=PatientRecordResponse)
+async def get_patient_records(patient_id: str, record_id: str, Authorize: AuthJWT = Depends()):
+
+    Authorize.jwt_required()
+    user = json.loads(Authorize.get_jwt_subject())
+
+    try:
+        query = records.select().where(PatientRecord.patient_id
+                                       == patient_id, PatientRecord.id == record_id)
+        record = await database.fetch_one(query)
+        return PatientRecordResponse.parse(record)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e.message)
+
+
+@router.post("/patient/{patient_id}/records", status_code=status.HTTP_200_OK, response_model=PatientRecordResponse)
+async def create_patient(patient_id: str, patient_record: PatientRecordCreate, Authorize: AuthJWT = Depends()):
+
+    Authorize.jwt_required()
+    user = json.loads(Authorize.get_jwt_subject())
+    try:
+        patient_record.id = uuid.uuid4()
+        patient_record.patient_id = patient_id
+        query = records.insert().values(**patient_record.dict()).returning(records)
+        data = await database.fetch_one(query)
+        return PatientRecordResponse.parse(data)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e.message)
