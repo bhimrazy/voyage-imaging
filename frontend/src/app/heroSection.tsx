@@ -1,12 +1,13 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 type Props = {};
 
 export default function HeroSection({}: Props) {
   const content = {
     description: "Join us and be a life saver for each other.",
-    cta_button: "Join Now",
+    cta_button: "Try Now",
     images: {
       a: "/doctor-using-laptop-thinking.jpg",
       b: "/young-female-doctor.jpg",
@@ -30,9 +31,11 @@ export default function HeroSection({}: Props) {
 
           {/* Buttons */}
           <div className="flex flex-row space-x-8 pt-10">
-            <button className="rounded-md bg-sky-900 px-10 py-3 font-semibold text-white transition hover:bg-sky-900/90 focus:outline-none">
-              {content?.cta_button}
-            </button>
+            <Link href="try-now">
+              <button className="rounded-md bg-sky-900 px-10 py-3 font-semibold text-white transition hover:bg-sky-900/90 focus:outline-none">
+                {content?.cta_button}
+              </button>
+            </Link>
             <button className="font-semibold text-sky-500 transition hover:text-sky-700 focus:outline-none">
               See more
             </button>
