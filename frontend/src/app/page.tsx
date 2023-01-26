@@ -1,7 +1,8 @@
 import Image from "next/image";
-import Features from "./features";
-import Header from "./header";
-import HeroSection from "./heroSection";
+import Features from "@/app/features";
+import Header from "@/app/header";
+import Footer from "@/app/footer";
+import HeroSection from "@/app/heroSection";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         {/* Features */}
         <Features />
       </main>
+      <Footer />
     </div>
   );
 }

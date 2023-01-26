@@ -21,7 +21,11 @@ export default function Header({}: Props) {
           <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257zM12.738 17.625l6.474-6.474a1.875 1.875 0 000-2.651L15.5 4.787a1.875 1.875 0 00-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375z" />
         </svg>
       ),
-      title: <>Voyage <span className="text-pink-600">Imaging</span></>,
+      title: (
+        <>
+          Voyage <span className="text-pink-600">Imaging</span>
+        </>
+      ),
     },
 
     menus: [
@@ -46,7 +50,7 @@ export default function Header({}: Props) {
     button: "Login",
   };
   return (
-    <header className="flex w-full py-6">
+    <header className="flex w-full py-6 border-b">
       <nav className="mx-auto flex w-full max-w-7xl flex-row items-center justify-between">
         {/* Logo */}
         <div className="flex cursor-pointer flex-row items-center space-x-2">
