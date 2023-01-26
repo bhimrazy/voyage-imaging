@@ -3,19 +3,19 @@
 version: '3.8'
 
 services:
-  # api:
-  #   container_name: voyage_api
-  #   build: .
-  #   command: python manage.py serve
-  #   volumes:
-  #     - .:/app
-  #   ports:
-  #     - 8000:8000
+  api:
+    container_name: voyage_api
+    build: .
+    command: python manage.py serve
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
 
-  #   # environment:
-  #   #   - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${PROJECT_NAME}
-  #   depends_on:
-  #     - db
+    # environment:
+    #   - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${PROJECT_NAME}
+    depends_on:
+      - db
   db:
     image: postgres:latest
     restart: always
