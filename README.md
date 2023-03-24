@@ -1,7 +1,6 @@
 # Title: Tuberculosis (TB) Detection from Chest X-ray using Deep Transfer Learning (PyTorch)
-Domain: Medical Imaging
 
-## Team Name : Voyage
+## Domain: Medical Imaging
 
 ![image](https://user-images.githubusercontent.com/46085301/227527871-be1da2c3-b6f9-47d4-82a0-5a9529054f38.png)
 
